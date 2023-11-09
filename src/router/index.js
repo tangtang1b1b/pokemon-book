@@ -12,16 +12,13 @@ const router = createRouter({
     {
       path: '/home/:id?',
       name: 'home',
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/HomeView.vue'),
+      meta: {
+        transition: 'fade'
+      }
     }
   ]
 })
 
-router.beforeRouteLeave((to, from, next) => {
-  setTimeout(() => {
-
-    next();
-  }, 1000);
-});
 
 export default router
