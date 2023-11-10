@@ -13,12 +13,14 @@ const router = createRouter({
       path: '/home/:id?',
       name: 'home',
       component: () => import('../views/HomeView.vue'),
-      meta: {
-        transition: 'fade'
-      }
     }
   ]
 })
 
+router.afterEach((to, from) => {
+  const toDepth = to.path.split('/').length
+  const fromDepth = from.path.split('/').length
+  to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+})
 
 export default router

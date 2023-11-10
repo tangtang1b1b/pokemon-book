@@ -34,13 +34,15 @@ const submitButton = (name) => {
 
 // ----- search 參數設定 -----
 $searchHeight: 50px;
-$submitWidth: 100px;
-$inputWidth: $submitWidth * 4;
+$submitWidth: 20%;
+$inputWidth: 80%;
 $borderSize: 30px;
 
 // ----------
 .container {
   width: 100%;
+  max-width: 768px;
+  margin: 0px auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,16 +54,18 @@ $borderSize: 30px;
 
   .shadowContainer {
     display: flex;
+    width: 100%;
     filter: drop-shadow(0px 0px 5px rgba(255, 255, 255, 1));
 
     .searchArea {
       border-radius: $borderSize 0 0 $borderSize;
       overflow: hidden;
+      width: $inputWidth;
 
       input {
         margin: 0;
         padding: 5px 10px;
-        width: $inputWidth;
+        width: 100%;
         height: $searchHeight;
         border: none;
         font-size: 20px;
