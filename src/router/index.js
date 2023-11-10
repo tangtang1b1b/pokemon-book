@@ -7,19 +7,21 @@ const router = createRouter({
     {
       path: '/',
       name: 'select',
-      component: select
+      component: select,
+      meta: { transtion: '' }
     },
     {
       path: '/home/:id?',
       name: 'home',
       component: () => import('../views/HomeView.vue'),
+      meta: { transtion: '' }
     }
   ]
 })
 
-router.afterEach((to, from) => {
-  const toDepth = to.path.split('/').length
-  const fromDepth = from.path.split('/').length
+router.beforeEach((to, from) => {
+  const toDepth = to.path.split('/').filter((item) => item.length !== 0).length
+  const fromDepth = from.path.split('/').filter((item) => item.length !== 0).length
   to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
 })
 
