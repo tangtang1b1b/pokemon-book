@@ -10,7 +10,7 @@ const submitButton = async (name) => {
   name = name.replace(/^0+/, ''); //拿掉開頭的所有0
   inputValue.value = '';
   await pokemonStore.pokeFetch(name);
-  pokemonStore.storeCards.push(pokemonStore.pokemon); 
+  pokemonStore.storeCards.push(pokemonStore.pokemon);
 }
 
 const isRandom = ref(false);
@@ -46,7 +46,7 @@ const randomClick = (() => {
 })
 
 onMounted(() => {
-  if(!pokemonStore.isRandomCardCalled){
+  if (!pokemonStore.isRandomCardCalled) {
     randomCard();
     pokemonStore.isRandomCardCalled = true;
   }
@@ -60,7 +60,7 @@ onMounted(() => {
       <div class="typeContainer">
         <div class="shadowContainer">
           <div class="searchArea">
-            <input type="text" v-model="inputValue" placeholder="Enter Pokémon Number or Name">
+            <input type="text" v-model="inputValue" placeholder="Number or Name">
           </div>
           <div class="submitArea">
             <div class="submitButton" @click="submitButton(inputValue)">
@@ -81,6 +81,12 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+
+@mixin phone {
+  @media screen and (max-width: 768px) {
+    @content
+  }
+}
 
 // ----- search 參數設定 -----
 $searchHeight: 50px;
@@ -111,11 +117,21 @@ $fontFamily: 'Pixelify Sans';
     justify-content: space-between;
     padding: 20px 0;
 
+    @include phone {
+      padding: 5px 0;
+    }
+
     .typeContainer {
       width: 70%;
+      height: 50px;
       display: flex;
       flex-direction: column;
       align-items: center;
+
+
+      @include phone {
+        width: 75%;
+      }
 
       p {
         font-size: 28px;
@@ -142,6 +158,11 @@ $fontFamily: 'Pixelify Sans';
             font-family: $fontFamily;
             letter-spacing: 1px;
 
+            @include phone {
+              height: 35px;
+              font-size: 16px;
+            }
+
             &:focus-visible {
               outline: none;
             }
@@ -156,6 +177,10 @@ $fontFamily: 'Pixelify Sans';
           background-color: #82bbe4;
           cursor: pointer;
           user-select: none;
+
+          @include phone {
+            height: 35px;
+          }
 
           .submitButton {
             width: 100%;
@@ -174,7 +199,7 @@ $fontFamily: 'Pixelify Sans';
       align-items: center;
       justify-content: space-evenly;
       width: 25%;
-      font-size: 20px;
+      height: 50px;
       box-shadow: 0px 0px 5px #FFCC02;
       border-radius: $borderSize;
       background-color: #FFCC02;
@@ -183,12 +208,22 @@ $fontFamily: 'Pixelify Sans';
       user-select: none;
       font-family: $fontFamily;
 
+      @include phone {
+        height: 35px;
+        width: 20%;
+      }
+
       p {
         height: 100%;
+        font-size: 18px;
         display: flex;
         justify-content: center;
         align-items: center;
         text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+        @include phone {
+          display: none;
+        }
       }
     }
   }

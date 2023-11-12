@@ -94,6 +94,10 @@ $fontFamily: 'Pixelify Sans';
   font-family: $fontFamily;
   letter-spacing: 1px;
 
+  @include phone {
+    padding: 5px 0;
+  }
+
   .pokeContainer {
     width: 100%;
     display: flex;
