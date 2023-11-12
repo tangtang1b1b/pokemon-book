@@ -5,6 +5,8 @@ body,html{
   height: 100%;
   background-color: #ccc;
   overflow-x: hidden;
+  background-image: url('./images/sky.jpg');
+  background-size: cover;
 }
 
 #app {
