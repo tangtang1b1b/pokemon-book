@@ -40,7 +40,6 @@ const randomCard = async () => {
       types: data.types
     };
     cards.value.push(pokeData);
-    console.log(cards.value);
   }
 }
 const randomClick = (() => {
@@ -60,7 +59,7 @@ onMounted(() => {
         <!-- <p>Enter id or name</p> -->
         <div class="shadowContainer">
           <div class="searchArea">
-            <input type="text" v-model="inputValue">
+            <input type="text" v-model="inputValue" placeholder="Enter pokemon id or name">
           </div>
           <div class="submitArea">
             <div class="submitButton" @click="submitButton(inputValue)">
@@ -80,21 +79,23 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
 
 // ----- search 參數設定 -----
 $searchHeight: 50px;
 $submitWidth: 20%;
 $inputWidth: 80%;
 $borderSize: 30px;
+$fontFamily: 'Pixelify Sans';
 
 // ----------
 .container {
   width: 100%;
-  max-width: 768px;
-  margin: 0px auto;
 
   .typeArea {
     width: 100%;
+    max-width: 997px;
+    margin: 0px auto;
     display: flex;
     justify-content: space-between;
     padding: 20px 0;
@@ -127,6 +128,8 @@ $borderSize: 30px;
             height: $searchHeight;
             border: none;
             font-size: 20px;
+            font-family: $fontFamily;
+            letter-spacing: 1px;
 
             &:focus-visible {
               outline: none;
