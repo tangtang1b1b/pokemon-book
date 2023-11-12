@@ -1,6 +1,8 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { usePokemonStore } from '../stores/counter';
+const pokemonStore = usePokemonStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -9,32 +11,31 @@ const pokeNum = route.query.id;
 const pokemon = reactive({});
 const imageLoad = ref(true);
 const loadFail = ref(false);
-// const pokeFetch = async () => {
-//   try {
-//     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeNum}`)
-//     if (!response.ok) {
-//       if (response.status === 404) {
-//         imageLoad.value = false
-//         loadFail.value = true;
-//       }
-//       throw new Error('Failed to fetch');
-//     } else {
-//      prepare.value = true;
-//     }
-//     const data = await response.json();
-//     pokemon.name = data.moves.name;
-//     pokemon.img = data.sprites.other['official-artwork'].front_default;
-//   } catch (error) {
-//     // 看有沒有要輸出
-//   }
-// }
-
-// const onImageLoad = () => {
-//   imageLoad.value = false;
-// }
+const pokeFetch = async () => {
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokeNum}`)
+    if (!response.ok) {
+      if (response.status === 404) {
+        imageLoad.value = false
+        loadFail.value = true;
+      }
+      throw new Error('Failed to fetch');
+    } else {
+     prepare.value = true;
+    }
+    const data = await response.json();
+    pokemon.name = data.moves.name;
+    pokemon.img = data.sprites.other['official-artwork'].front_default;
+  } catch (error) {
+    // 看有沒有要輸出
+  }
+}
+const onImageLoad = () => {
+  imageLoad.value = false;
+}
 
 const pokeData = onMounted(async () => {
-  await pokeFetch();
+  await pokeFetch(pokeNum);
 })
 </script>
 

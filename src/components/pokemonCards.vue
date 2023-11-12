@@ -1,22 +1,64 @@
 <script setup>
 import { ref, onMounted, defineProps, watchEffect, computed } from 'vue';
-import { usePokemonStore } from '../stores/counter';
-const pokemonStore = usePokemonStore();
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const props = defineProps({
   cards: Array
 });
 
-onMounted(() => {
+const tpyeColor = (name) => {
+  switch (name) {
+    case 'normal':
+      return { backgroundColor: '#a0a0a0' };
+    case 'fighting':
+      return { backgroundColor: '#c85500' };
+    case 'flying':
+      return { backgroundColor: '#79bcd7' };
+    case 'poison':
+      return { backgroundColor: '#be78be' };
+    case 'ground':
+      return { backgroundColor: '#cca142' };
+    case 'rock':
+      return { backgroundColor: '#a07850' };
+    case 'bug':
+      return { backgroundColor: '#32b432' };
+    case 'ghost':
+      return { backgroundColor: '#8c78f0' };
+    case 'steel':
+      return { backgroundColor: '#96b4dc' };
+    case 'fire':
+      return { backgroundColor: '#ff3700' };
+    case 'water':
+      return { backgroundColor: '#0094e5' };
+    case 'grass':
+      return { backgroundColor: '#92bf19' };
+    case 'electric':
+      return { backgroundColor: '#e4b700' };
+    case 'psychic':
+      return { backgroundColor: '#dc78c8' };
+    case 'ice':
+      return { backgroundColor: '#00b7ee' };
+    case 'dragon':
+      return { backgroundColor: '#3c64c8' };
+    case 'dark':
+      return { backgroundColor: '#646464' };
+    case 'fairy':
+      return { backgroundColor: '#ff7eb8' };
+    default:
+      return {};
+  }
+}
 
-});
-
+const pokePersonPage = (id) => {
+  router.push(`/home?id=${id}`);
+}
 </script>
 
 <template>
   <div class="pokeArea">
     <ul class="pokeContainer">
-      <li class="pokeCard" v-for="card in cards" :key="card">
+      <li class="pokeCard" @click="pokePersonPage(card.id)" v-for="card in cards" :key="card">
         <div class="pokeLine">
           <div class="pokeImage"><img :src="card.img" alt=""></div>
           <div class="pokeDetail">
@@ -26,7 +68,7 @@ onMounted(() => {
             </div>
             <div class="pokeStatus">
               <div class="type" v-for="type in card.types" :key="type">
-                <p>{{ type.type.name }}</p>
+                <p :style="tpyeColor(type.type.name)">{{ type.type.name }}</p>
               </div>
             </div>
           </div>
@@ -76,10 +118,12 @@ $fontFamily: 'Pixelify Sans';
         border-radius: 15px;
         cursor: pointer;
         transition: 0.2s;
-        &:hover{
-          box-shadow: 0px 0px 7px 0px rgba(194,204,211,1);
+
+        &:hover {
+          box-shadow: 0px 0px 7px 0px rgba(194, 204, 211, 1);
         }
-        &:hover .pokeImage img{
+
+        &:hover .pokeImage img {
           height: 110%;
         }
 
@@ -108,7 +152,7 @@ $fontFamily: 'Pixelify Sans';
           padding: 5px 0px;
           box-sizing: border-box;
           color: #f7f7f7;
-          background-image: linear-gradient(to top, rgba(39,65,91,0.55), rgba(0,0,0,0));
+          background-image: linear-gradient(to top, rgba(39, 65, 91, 0.6), rgba(0, 0, 0, 0));
           border-radius: 0px 0px 15px 15px;
 
           .pokeName {
@@ -118,10 +162,10 @@ $fontFamily: 'Pixelify Sans';
             .id,
             .name {
               margin-left: 5%;
-              font-size: 1.5vw;
+              font-size: 1.4vw;
 
               @include phone {
-                font-size: 3vw;
+                font-size: 2.8vw;
               }
             }
           }
@@ -140,11 +184,14 @@ $fontFamily: 'Pixelify Sans';
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                font-size: 1.5vw;
+                font-size: 1.4vw;
                 background-color: #f0a;
+                color: #fff;
+                text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 0 2px 1px #a0a0a0;
 
                 @include phone {
-                  font-size: 3vw;
+                  font-size: 2.8vw;
                 }
               }
             }

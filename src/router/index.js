@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import select from '../views/SelectView.vue'
+import home from '../views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,15 +9,15 @@ const router = createRouter({
       path: '/',
       name: 'select',
       component: select,
-      meta: { transtion: '' }
+      meta: { transition: '' }
     },
     {
       path: '/home/:id?',
       name: 'home',
-      component: () => import('../views/HomeView.vue'),
-      meta: { transtion: '' }
+      component: home,
+      meta: { transition: '' }
     }
-  ]
+  ],
 })
 
 router.beforeEach((to, from) => {

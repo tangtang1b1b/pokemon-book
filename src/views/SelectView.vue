@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/return-in-computed-property -->
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { usePokemonStore } from '../stores/counter';
@@ -6,15 +5,14 @@ import pokemonCards from '../components/pokemonCards.vue';
 const pokemonStore = usePokemonStore();
 
 const inputValue = ref('');
-const submitButton = (name) => {
+const submitButton = async (name) => {
+  pokemonStore.storeCards = [];
   name = name.replace(/^0+/, ''); //拿掉開頭的所有0
-  pokemonStore.pokeNum = name;
-  // router.push(`/home?id=${name}`);
   inputValue.value = '';
-  pokemonStore.pokeFetch(pokemonStore.pokeNum)
+  await pokemonStore.pokeFetch(name);
+  pokemonStore.storeCards.push(pokemonStore.pokemon); 
 }
 
-const cards = ref([]);
 const isRandom = ref(false);
 const random = () => {
   const randomNum = ref([]);
@@ -27,7 +25,7 @@ const random = () => {
   return randomNum.value
 }
 const randomCard = async () => {
-  cards.value = [];
+  pokemonStore.storeCards = [];
   const randomNumbers = random();
   for (let i = 0; i < randomNumbers.length; i++) {
     const num = isRandom.value ? randomNumbers[i] : i + 1;
@@ -39,7 +37,7 @@ const randomCard = async () => {
       img: data.sprites.other['official-artwork'].front_default,
       types: data.types
     };
-    cards.value.push(pokeData);
+    pokemonStore.storeCards.push(pokeData);
   }
 }
 const randomClick = (() => {
@@ -48,18 +46,21 @@ const randomClick = (() => {
 })
 
 onMounted(() => {
-  randomCard();
+  if(!pokemonStore.isRandomCardCalled){
+    randomCard();
+    pokemonStore.isRandomCardCalled = true;
+  }
 })
 </script>
 
 <template>
   <div class="container">
+    <h1>Pokédex</h1>
     <div class="typeArea">
       <div class="typeContainer">
-        <!-- <p>Enter id or name</p> -->
         <div class="shadowContainer">
           <div class="searchArea">
-            <input type="text" v-model="inputValue" placeholder="Enter pokemon id or name">
+            <input type="text" v-model="inputValue" placeholder="Enter Pokémon Number or Name">
           </div>
           <div class="submitArea">
             <div class="submitButton" @click="submitButton(inputValue)">
@@ -68,12 +69,12 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="selectRandom">
-        <p @click="randomClick">隨機顯示</p>
+      <div class="selectRandom" @click="randomClick">
+        <p>Random button</p>
         <span class="material-symbols-outlined">cached</span>
       </div>
     </div>
-    <pokemonCards :cards="cards"></pokemonCards>
+    <pokemonCards :cards="pokemonStore.storeCards"></pokemonCards>
   </div>
 </template>
 
@@ -91,6 +92,16 @@ $fontFamily: 'Pixelify Sans';
 // ----------
 .container {
   width: 100%;
+
+  h1 {
+    width: 100%;
+    max-width: 997px;
+    margin: 0px auto;
+    color: #f7f7f7;
+    font-family: $fontFamily;
+    font-size: 36px;
+    letter-spacing: 4px;
+  }
 
   .typeArea {
     width: 100%;
@@ -163,19 +174,21 @@ $fontFamily: 'Pixelify Sans';
       align-items: center;
       justify-content: space-evenly;
       width: 25%;
-      font-size: 18px;
+      font-size: 20px;
       box-shadow: 0px 0px 5px #FFCC02;
       border-radius: $borderSize;
       background-color: #FFCC02;
       color: #fff;
       cursor: pointer;
       user-select: none;
+      font-family: $fontFamily;
 
       p {
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
       }
     }
   }
