@@ -8,9 +8,9 @@ const inputValue = ref('');
 const submitButton = async (name) => {
   pokemonStore.storeCards = [];
   name = name.replace(/^0+/, ''); //拿掉開頭的所有0
-  inputValue.value = '';
   await pokemonStore.pokeFetch(name);
   pokemonStore.storeCards.push(pokemonStore.pokemon);
+  inputValue.value = '';
 }
 
 const isRandom = ref(false);

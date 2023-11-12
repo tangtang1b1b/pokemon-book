@@ -10,12 +10,12 @@ export const usePokemonStore = defineStore('pokemon', () => {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`)
       if (!response.ok) {
         if (response.status === 404) {
-          imageLoad.value = false
-          loadFail.value = true
+          // imageLoad.value = false
+          // loadFail.value = true
         }
         throw new Error('Failed to fetch')
       } else {
-        prepare.value = true
+        // prepare.value = true
       }
       const data = await response.json()
       const pokeData = {
