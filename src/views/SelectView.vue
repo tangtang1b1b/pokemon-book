@@ -157,6 +157,7 @@ $fontFamily: 'Pixelify Sans';
             font-size: 20px;
             font-family: $fontFamily;
             letter-spacing: 1px;
+            border-radius: 0;
 
             @include phone {
               height: 35px;
