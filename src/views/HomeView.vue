@@ -2,6 +2,7 @@
 import { onMounted, reactive, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { usePokemonStore } from '../stores/counter';
+import pokemonChart from '../components/pokemonChart.vue';
 const pokemonStore = usePokemonStore();
 const router = useRouter();
 const route = useRoute();
@@ -31,12 +32,12 @@ const pokeFetch = async () => {
     }
     const data = await response.json();
     pokemon.value.id = data.id,
-      pokemon.value.name = data.name;
+    pokemon.value.name = data.name;
     pokemon.value.img = data.sprites.other['official-artwork'].front_default;
     infoDetails.value.abilities.val = data.abilities;
     infoDetails.value.weight.val = `${data.weight / 10} kg`;
     infoDetails.value.height.val = `${data.height / 10} m`;
-    infoDetails.value.stats.val = data.stats;
+    pokemonStore.stats.value = data.stats;
   } catch (error) {
     // 看有沒有要輸出
   }
@@ -81,6 +82,7 @@ const pokeBackPage = () => {
         </div>
       </div>
     </div>
+    <pokemonChart/>
     <div class="backButton" @click="pokeBackPage">
       <span class="material-symbols-outlined">arrow_back</span>
       <p>Back Pokédex</p>
@@ -195,6 +197,10 @@ $fontFamily: 'Pixelify Sans';
         .pokeImage {
           width: 80%;
           background-size: cover;
+
+          @include phone {
+            width: 100%;
+          }
         }
       }
 
@@ -218,6 +224,10 @@ $fontFamily: 'Pixelify Sans';
           width: 50%;
           height: 50%;
           font-size: 22px;
+
+          @include phone {
+            width: 100%;
+          }
 
           .name {
             color: #b3eafe;
