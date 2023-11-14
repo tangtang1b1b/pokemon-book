@@ -2,6 +2,7 @@ import { ref, reactive, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const usePokemonStore = defineStore('pokemon', () => {
+  
   const isRandomCardCalled = ref(false)
   const storeCards = ref([])
   const pokemon = ref([])

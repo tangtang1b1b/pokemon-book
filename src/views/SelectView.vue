@@ -5,6 +5,8 @@ import pokemonCards from '../components/pokemonCards.vue';
 const pokemonStore = usePokemonStore();
 
 const inputValue = ref('');
+const isRandom = ref(false);
+
 const submitButton = async (name) => {
   pokemonStore.storeCards = [];
   name = name.replace(/^0+/, ''); //拿掉開頭的所有0
@@ -13,7 +15,6 @@ const submitButton = async (name) => {
   inputValue.value = '';
 }
 
-const isRandom = ref(false);
 const random = () => {
   const randomNum = ref([]);
   while (randomNum.value.length < 20) {
@@ -24,12 +25,13 @@ const random = () => {
   }
   return randomNum.value
 }
+
 const randomCard = async () => {
   pokemonStore.storeCards = [];
   const randomNumbers = random();
   for (let i = 0; i < randomNumbers.length; i++) {
     const num = isRandom.value ? randomNumbers[i] : i + 1;
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`)
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`);
     const data = await response.json();
     const pokeData = {
       id: data.id,
@@ -40,6 +42,7 @@ const randomCard = async () => {
     pokemonStore.storeCards.push(pokeData);
   }
 }
+
 const randomClick = (() => {
   isRandom.value = true;
   randomCard();
@@ -60,7 +63,7 @@ onMounted(() => {
       <div class="typeContainer">
         <div class="shadowContainer">
           <div class="searchArea">
-            <input type="text" v-model="inputValue" placeholder="Number or Name">
+            <input type="text" @keyup.enter="submitButton(inputValue)" v-model="inputValue" placeholder="Name or 1 - 1017">
           </div>
           <div class="submitArea">
             <div class="submitButton" @click="submitButton(inputValue)">
@@ -81,6 +84,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stick+No+Bills&display=swap');
 
 @mixin phone {
   @media screen and (max-width: 768px) {
@@ -107,6 +111,11 @@ $fontFamily: 'Pixelify Sans';
     font-family: $fontFamily;
     font-size: 36px;
     letter-spacing: 4px;
+
+    @include phone {
+      text-align: center;
+      font-size: 32px;
+    }
   }
 
   .typeArea {
@@ -216,7 +225,7 @@ $fontFamily: 'Pixelify Sans';
 
       p {
         height: 100%;
-        font-size: 18px;
+        font-size: 20px;
         display: flex;
         justify-content: center;
         align-items: center;

@@ -80,6 +80,7 @@ const pokePersonPage = (id) => {
 
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stick+No+Bills&display=swap');
 $fontFamily: 'Pixelify Sans';
 
 @mixin phone {
