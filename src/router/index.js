@@ -18,6 +18,9 @@ const router = createRouter({
       meta: { transition: '' }
     }
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }
+  }
 })
 
 router.beforeEach((to, from) => {
