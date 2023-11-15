@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-side-effects-in-computed-properties -->
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { usePokemonStore } from '../stores/counter';
@@ -5,6 +6,7 @@ import pokemonCards from '../components/pokemonCards.vue';
 const pokemonStore = usePokemonStore();
 
 const inputValue = ref('');
+const selected = ref('low');
 const isRandom = ref(false);
 
 const submitButton = async (name) => {
@@ -43,10 +45,34 @@ const randomCard = async () => {
   }
 }
 
-const randomClick = (() => {
+const randomButton = (() => {
   isRandom.value = true;
   randomCard();
 })
+
+const homeButton = (() => {
+  isRandom.value = false;
+  randomCard();
+})
+
+const filterArray = computed(() => {
+  switch (selected.value) {
+    case 'low':
+      return pokemonStore.storeCards.sort((a, b) => {
+        const idA = parseInt(a.id, 10);
+        const idB = parseInt(b.id, 10);
+        return idA - idB
+      });
+    case 'high':
+      return pokemonStore.storeCards.sort((a, b) => {
+        const idA = parseInt(a.id, 10);
+        const idB = parseInt(b.id, 10);
+        return idB - idA
+      });
+    default:
+      return pokemonStore.storeCards;
+  }
+});
 
 onMounted(() => {
   if (!pokemonStore.isRandomCardCalled) {
@@ -58,12 +84,13 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <h1>Pokédex</h1>
+    <h1 @click="homeButton">Pokédex</h1>
     <div class="typeArea">
       <div class="typeContainer">
         <div class="shadowContainer">
           <div class="searchArea">
-            <input type="text" @keyup.enter="submitButton(inputValue)" v-model="inputValue" placeholder="Name or 1 - 1017">
+            <input type="text" @keyup.enter="submitButton(inputValue)" v-model="inputValue"
+              placeholder="Name or 1 - 1017">
           </div>
           <div class="submitArea">
             <div class="submitButton" @click="submitButton(inputValue)">
@@ -72,12 +99,16 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="selectRandom" @click="randomClick">
-        <p>Random button</p>
+      <div class="selectRandom" @click="randomButton">
+        <p>Random</p>
         <span class="material-symbols-outlined">cached</span>
       </div>
+      <select class="filterButton" v-model="selected">
+        <option value="low">Low</option>
+        <option value="high">High</option>
+      </select>
     </div>
-    <pokemonCards :cards="pokemonStore.storeCards"></pokemonCards>
+    <pokemonCards :cards="filterArray"></pokemonCards>
   </div>
 </template>
 
@@ -111,6 +142,8 @@ $fontFamily: 'Pixelify Sans';
     font-family: $fontFamily;
     font-size: 36px;
     letter-spacing: 4px;
+    cursor: pointer;
+    user-select: none;
 
     @include phone {
       text-align: center;
@@ -123,15 +156,16 @@ $fontFamily: 'Pixelify Sans';
     max-width: 997px;
     margin: 0px auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     padding: 20px 0;
+    flex-wrap: wrap;
 
     @include phone {
       padding: 5px 0;
     }
 
     .typeContainer {
-      width: 70%;
+      width: 65%;
       height: 50px;
       display: flex;
       flex-direction: column;
@@ -208,7 +242,7 @@ $fontFamily: 'Pixelify Sans';
       display: flex;
       align-items: center;
       justify-content: space-evenly;
-      width: 25%;
+      width: 20%;
       height: 50px;
       box-shadow: 0px 0px 5px #FFCC02;
       border-radius: $borderSize;
@@ -235,6 +269,27 @@ $fontFamily: 'Pixelify Sans';
           display: none;
         }
       }
+    }
+  }
+
+  .filterButton {
+    width: 10%;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    color: #fff;
+    background-color: #0D1A26;
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+    border: none;
+    border-radius: $borderSize;
+    font-size: 16px;
+    font-family: $fontFamily;
+
+    @include phone {
+      height: 35px;
+      width: 30%;
     }
   }
 }

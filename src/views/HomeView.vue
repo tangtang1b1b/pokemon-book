@@ -82,7 +82,7 @@ const pokeBackPage = () => {
         </div>
       </div>
     </div>
-    <pokemonChart/>
+    <pokemonChart />
     <div class="backButton" @click="pokeBackPage">
       <span class="material-symbols-outlined">arrow_back</span>
       <p>Back Pokédex</p>
@@ -197,6 +197,7 @@ $fontFamily: 'Pixelify Sans';
         .pokeImage {
           width: 80%;
           background-size: cover;
+          animation: fadein 0.5s 0.5s both;
 
           @include phone {
             width: 100%;
@@ -215,6 +216,7 @@ $fontFamily: 'Pixelify Sans';
         background-color: rgba(255, 255, 255, 0.01);
         border: solid 3px rgba(48, 167, 215, 0.5);
         box-shadow: inset 0px 0px 15px rgba(48, 167, 215, 1);
+        animation: fadein 0.5s 0.5s both;
 
         @include phone {
           width: 100%;
@@ -286,6 +288,18 @@ $fontFamily: 'Pixelify Sans';
   }
 }
 
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    transform: scale(115%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(100%);
+  }
+}
+
 @keyframes wave {
   0% {
     filter: drop-shadow(0px 0px 5px #fff);
@@ -298,4 +312,5 @@ $fontFamily: 'Pixelify Sans';
   100% {
     filter: drop-shadow(0px 0px 5px #fff);
   }
-}</style>
+}
+</style>
