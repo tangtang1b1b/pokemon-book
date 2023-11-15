@@ -281,15 +281,14 @@ $fontFamily: 'Pixelify Sans';
     cursor: pointer;
     color: #fff;
     background-color: #0D1A26;
-    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
-    border: none;
+    border: solid 1px rgba(255, 255, 255, 0.3);
     border-radius: $borderSize;
     font-size: 16px;
     font-family: $fontFamily;
 
     @include phone {
       height: 35px;
-      width: 30%;
+      width: 40%;
     }
   }
 }
