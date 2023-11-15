@@ -10,7 +10,7 @@ const chartRef = ref(null);
 
 onMounted(() => {
   const ctx = chartRef.value.getContext('2d');
-  chartRef.value.width = window.innerWidth*0.8;
+  chartRef.value.width = window.innerWidth * 0.8;
   const unwatch = watch(pokemonStore.stats, async (newStats) => {
 
     for (let i = 0; i < newStats.value.length; i++) {
@@ -24,13 +24,24 @@ onMounted(() => {
         datasets: [{
           label: 'stats',
           data: flattenedStats,
-          borderWidth: 1
+          borderWidth: 1,
+          borderRadius: 5,
+          borderColor: '#b3eafe',
+          backgroundColor: 'rgba(48, 167, 215, 0.5)'
         }]
       },
       options: {
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            ticks: {
+              color: '#f7f7f7'
+            }
+          },
+          x:{
+            ticks: {
+              color: '#f7f7f7'
+            }
           }
         }
       }
@@ -47,9 +58,10 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-div{
+div {
   width: 100%;
   max-width: 997px;
+
   #myChart {
     margin-top: 100px;
   }
