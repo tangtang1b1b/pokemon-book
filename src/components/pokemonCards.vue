@@ -62,8 +62,8 @@ const pokePersonPage = (id) => {
     <div class="pokeContainerUnfinish" v-show="!pokemonStore.isFinish">
       <img class="loadImage" src="@/assets/images/rotate.svg" alt="loadImage" v-if="!pokemonStore.isLoadFail">
       <div class="loadFail" v-else>
-      <p>沒有尋找到寶可夢。</p>
-      <p>用別的條件重新搜尋吧。</p>
+        <p>沒有尋找到寶可夢</p>
+        <p>用別的條件重新搜尋吧</p>
       </div>
     </div>
     <ul class="pokeContainer" v-show="pokemonStore.isFinish">
@@ -107,13 +107,15 @@ $fontFamily: 'Pixelify Sans';
   @include phone {
     padding: 5px 0;
   }
-  .pokeContainerUnfinish{
+
+  .pokeContainerUnfinish {
     height: 20vh;
     margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    .loadFail{
+
+    .loadFail {
       width: 80%;
       height: 100%;
       color: #fff;
@@ -124,18 +126,30 @@ $fontFamily: 'Pixelify Sans';
       border: solid 2px #466E9B;
       border-radius: 20px;
       background-color: rgba(10, 20, 30, 0.5);
-      p:nth-child(1){
+
+      p:nth-child(1) {
         font-size: 26px;
+
+        @include phone {
+          font-size: 22px;
+        }
       }
-      p:nth-child(2){
+
+      p:nth-child(2) {
         font-size: 18px;
+
+        @include phone {
+          font-size: 14px;
+        }
       }
     }
-    img{
+
+    img {
       filter: drop-shadow(0px 0px 5px #fff);
       height: 20vh;
     }
   }
+
   .pokeContainer {
     width: 100%;
     display: flex;
@@ -242,5 +256,4 @@ $fontFamily: 'Pixelify Sans';
       }
     }
   }
-}
-</style>
+}</style>
