@@ -25,9 +25,8 @@ onMounted(() => {
           label: 'stats',
           data: flattenedStats,
           borderWidth: 1,
-          borderRadius: 5,
-          borderColor: '#b3eafe',
-          backgroundColor: 'rgba(48, 167, 215, 0.5)'
+          borderColor: 'rgba(48, 167, 215, 1)',
+          backgroundColor: 'rgba(48, 167, 215, 0.4)'
         }]
       },
       options: {
@@ -35,12 +34,12 @@ onMounted(() => {
           y: {
             beginAtZero: true,
             ticks: {
-              color: '#f7f7f7'
+              color: 'rgba(255, 255, 255, 0.8)'
             }
           },
           x:{
             ticks: {
-              color: '#f7f7f7'
+              color: 'rgba(255, 255, 255, 0.8)'
             }
           }
         }
