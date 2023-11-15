@@ -6,7 +6,7 @@ import pokemonCards from '../components/pokemonCards.vue';
 const pokemonStore = usePokemonStore();
 
 const inputValue = ref('');
-const selected = ref('low');
+const selected = ref('');
 const isRandom = ref(false);
 
 const submitButton = async (name) => {
@@ -28,31 +28,42 @@ const random = () => {
   return randomNum.value
 }
 
-const randomCard = async () => {
-  pokemonStore.storeCards = [];
-  const randomNumbers = random();
-  for (let i = 0; i < randomNumbers.length; i++) {
-    const num = isRandom.value ? randomNumbers[i] : i + 1;
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`);
-    const data = await response.json();
-    const pokeData = {
-      id: data.id,
-      name: data.name,
-      img: data.sprites.other['official-artwork'].front_default,
-      types: data.types
-    };
-    pokemonStore.storeCards.push(pokeData);
-  }
+const randomCard = () => {
+  return new Promise(async (resolve) => {
+    pokemonStore.storeCards = [];
+    const randomNumbers = random();
+    for (let i = 0; i < randomNumbers.length; i++) {
+      const num = isRandom.value ? randomNumbers[i] : i + 1;
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${num}`);
+      const data = await response.json();
+      const pokeData = {
+        id: data.id,
+        name: data.name,
+        img: data.sprites.other['official-artwork'].front_default,
+        types: data.types
+      };
+      pokemonStore.storeCards.push(pokeData);
+    }
+    resolve(true);
+  })
 }
 
 const randomButton = (() => {
   isRandom.value = true;
-  randomCard();
+  pokemonStore.isFinish = false;
+  pokemonStore.isLoadFail = false
+  randomCard().then((result) => {
+    pokemonStore.isFinish = result;
+  });
 })
 
 const homeButton = (() => {
   isRandom.value = false;
-  randomCard();
+  pokemonStore.isFinish = false;
+  pokemonStore.isLoadFail = false
+  randomCard().then((result) => {
+    pokemonStore.isFinish = result;
+  });
 })
 
 const filterArray = computed(() => {
@@ -76,7 +87,9 @@ const filterArray = computed(() => {
 
 onMounted(() => {
   if (!pokemonStore.isRandomCardCalled) {
-    randomCard();
+    randomCard().then((result) => {
+      pokemonStore.isFinish = result;
+    });
     pokemonStore.isRandomCardCalled = true;
   }
 })
@@ -104,6 +117,7 @@ onMounted(() => {
         <span class="material-symbols-outlined">cached</span>
       </div>
       <select class="filterButton" v-model="selected">
+        <option disabled value="">Sort by</option>
         <option value="low">Low</option>
         <option value="high">High</option>
       </select>
@@ -242,7 +256,7 @@ $fontFamily: 'Pixelify Sans';
       display: flex;
       align-items: center;
       justify-content: space-evenly;
-      width: 20%;
+      width: 17%;
       height: 50px;
       box-shadow: 0px 0px 5px #FFCC02;
       border-radius: $borderSize;
@@ -273,7 +287,7 @@ $fontFamily: 'Pixelify Sans';
   }
 
   .filterButton {
-    width: 10%;
+    width: 13%;
     color: #000;
     display: flex;
     justify-content: center;
@@ -283,7 +297,7 @@ $fontFamily: 'Pixelify Sans';
     background-color: #0D1A26;
     border: solid 1px rgba(255, 255, 255, 0.3);
     border-radius: $borderSize;
-    font-size: 16px;
+    font-size: 18px;
     font-family: $fontFamily;
 
     @include phone {
